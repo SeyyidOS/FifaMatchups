@@ -1,26 +1,26 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from "react";
 
-const API = 'http://127.0.0.1:8000'
+const API = "http://173.249.40.69:8001";
 
 export default function Leaderboard() {
-  const [individual, setIndividual] = useState([])
-  const [teams, setTeams] = useState([])
+  const [individual, setIndividual] = useState([]);
+  const [teams, setTeams] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
-      const indRes = await fetch(`${API}/leaderboard/individual`)
+      const indRes = await fetch(`${API}/leaderboard/individual`);
       if (indRes.ok) {
-        setIndividual(await indRes.json())
+        setIndividual(await indRes.json());
       }
-      const teamRes = await fetch(`${API}/leaderboard/team`)
+      const teamRes = await fetch(`${API}/leaderboard/team`);
       if (teamRes.ok) {
-        const data = await teamRes.json()
-        const filtered = data.filter((e) => e.name.split(' + ').length === 2)
-        setTeams(filtered)
+        const data = await teamRes.json();
+        const filtered = data.filter((e) => e.name.split(" + ").length === 2);
+        setTeams(filtered);
       }
-    }
-    fetchData()
-  }, [])
+    };
+    fetchData();
+  }, []);
 
   const renderTable = (entries) => (
     <table className="leaderboard-table">
@@ -51,7 +51,7 @@ export default function Leaderboard() {
         ))}
       </tbody>
     </table>
-  )
+  );
 
   return (
     <div className="App">
@@ -65,5 +65,5 @@ export default function Leaderboard() {
         {renderTable(teams)}
       </section>
     </div>
-  )
+  );
 }
