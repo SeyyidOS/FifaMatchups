@@ -107,11 +107,23 @@ function App() {
           <label>Team B Players (ids comma separated):</label>
           <input value={form.teamBPlayers} onChange={(e) => setForm({ ...form, teamBPlayers: e.target.value })} />
         </div>
-        <div>
-          <label>Score A:</label>
-          <input type="number" value={form.teamAScore} onChange={(e) => setForm({ ...form, teamAScore: e.target.value })} />
-          <label>Score B:</label>
-          <input type="number" value={form.teamBScore} onChange={(e) => setForm({ ...form, teamBScore: e.target.value })} />
+        <div className="score-inputs">
+          <div>
+            <label>Score A:</label>
+            <input
+              type="number"
+              value={form.teamAScore}
+              onChange={(e) => setForm({ ...form, teamAScore: e.target.value })}
+            />
+          </div>
+          <div>
+            <label>Score B:</label>
+            <input
+              type="number"
+              value={form.teamBScore}
+              onChange={(e) => setForm({ ...form, teamBScore: e.target.value })}
+            />
+          </div>
         </div>
         <button onClick={createMatch}>Submit Match</button>
       </section>
