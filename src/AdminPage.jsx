@@ -21,7 +21,9 @@ export default function AdminPage({
         {players.map((p) => (
           <li key={p.id}>
             {p.id}: {p.username}{' '}
-            <button onClick={() => deletePlayer(p.id)}>Delete</button>
+            <button className="danger" onClick={() => deletePlayer(p.id)}>
+              Delete
+            </button>
           </li>
         ))}
       </ul>
@@ -30,7 +32,9 @@ export default function AdminPage({
         {matches.map((m) => (
           <li key={m.id}>
             {m.team_a_club.name} vs {m.team_b_club.name}{' '}
-            <button onClick={() => deleteMatch(m.id)}>Delete</button>
+            <button className="danger" onClick={() => deleteMatch(m.id)}>
+              Delete
+            </button>
           </li>
         ))}
       </ul>

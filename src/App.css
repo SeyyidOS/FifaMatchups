@@ -6,6 +6,25 @@
   border: 1px solid #d0e4ff;
 }
 
+nav {
+  display: flex;
+  gap: 1rem;
+  background: #1565c0;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  margin-bottom: 2rem;
+}
+
+nav a {
+  color: #fff;
+  font-weight: 500;
+}
+
+nav a:hover {
+  text-decoration: underline;
+  color: #cfe2ff;
+}
+
 h1 {
   text-align: center;
   margin-top: 0;
@@ -51,6 +70,14 @@ button {
 
 button:hover {
   background-color: #1565c0;
+}
+
+button.danger {
+  background-color: #e53935;
+}
+
+button.danger:hover {
+  background-color: #b71c1c;
 }
 
 ul {
@@ -127,4 +154,12 @@ li {
 
 .leaderboard-table th {
   background: #f0f7ff;
+}
+
+.leaderboard-table tbody tr:nth-child(odd) {
+  background: #f9fbff;
+}
+
+.leaderboard-table tbody tr:hover {
+  background: #eef3ff;
 }
