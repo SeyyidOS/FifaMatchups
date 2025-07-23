@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Depends, HTTPException
+from fastapi import FastAPI, Depends, HTTPException, Header
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 from collections import defaultdict
@@ -24,6 +24,14 @@ DEFAULT_CLUBS = {
     1: ["Real Madrid", "PSG"],
     2: ["Chelsea", "Liverpool"],
 }
+
+# Simple token used to authorize admin actions
+ADMIN_TOKEN = "secret"
+
+def admin_required(x_admin_token: str | None = Header(default=None)):
+    """Dependency to verify admin token."""
+    if x_admin_token != ADMIN_TOKEN:
+        raise HTTPException(status_code=403, detail="Admin credentials required")
 
 @app.on_event("startup")
 def populate_clubs():
@@ -164,3 +172,25 @@ def team_leaderboard(db: Session = Depends(get_db)):
         results.append(schemas.LeaderboardEntry(name=name, win_rate=win_rate, **stats))
     results.sort(key=lambda e: e.win_rate, reverse=True)
     return results
+
+
+@app.delete("/players/{player_id}", dependencies=[Depends(admin_required)])
+def delete_player(player_id: int, db: Session = Depends(get_db)):
+    player = db.query(models.Player).get(player_id)
+    if not player:
+        raise HTTPException(status_code=404, detail="Player not found")
+    db.query(models.MatchPlayer).filter_by(player_id=player_id).delete()
+    db.delete(player)
+    db.commit()
+    return {"detail": "Player deleted"}
+
+
+@app.delete("/matches/{match_id}", dependencies=[Depends(admin_required)])
+def delete_match(match_id: int, db: Session = Depends(get_db)):
+    match = db.query(models.Match).get(match_id)
+    if not match:
+        raise HTTPException(status_code=404, detail="Match not found")
+    db.query(models.MatchPlayer).filter_by(match_id=match_id).delete()
+    db.delete(match)
+    db.commit()
+    return {"detail": "Match deleted"}
