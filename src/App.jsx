@@ -127,16 +127,39 @@ function App() {
         </div>
         <button onClick={createMatch}>Submit Match</button>
       </section>
-      <section>
-        <h2>Matches</h2>
-        <ul>
-          {matches.map((m) => (
-            <li key={m.id}>
-              {new Date(m.date).toLocaleString()} - Team A {m.team_a_club.name} {m.team_a_score} vs {m.team_b_score} {m.team_b_club.name}
-            </li>
-          ))}
-        </ul>
-      </section>
+        <section>
+          <h2>Matches</h2>
+          <ul>
+            {matches.map((m) => {
+              const teamAPlayers = m.players
+                .filter((mp) => mp.team === 1)
+                .map((mp) => mp.player.username)
+                .join(', ')
+              const teamBPlayers = m.players
+                .filter((mp) => mp.team === 2)
+                .map((mp) => mp.player.username)
+                .join(', ')
+              return (
+                <li key={m.id} className="match-item">
+                  <div className="match-header">{new Date(m.date).toLocaleString()}</div>
+                  <div className="match-content">
+                    <div className="team-info">
+                      <div className="club-name">{m.team_a_club.name}</div>
+                      <div className="players">{teamAPlayers}</div>
+                    </div>
+                    <div className="score">
+                      {m.team_a_score} - {m.team_b_score}
+                    </div>
+                    <div className="team-info">
+                      <div className="club-name">{m.team_b_club.name}</div>
+                      <div className="players">{teamBPlayers}</div>
+                    </div>
+                  </div>
+                </li>
+              )
+            })}
+          </ul>
+        </section>
     </div>
   )
 }

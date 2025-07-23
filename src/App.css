@@ -73,3 +73,41 @@ li {
 .score-inputs input {
   width: 100%;
 }
+
+.match-item {
+  margin-bottom: 1rem;
+  padding: 0.75rem;
+  border: 1px solid #dce8ff;
+  border-radius: 4px;
+  background: #fff;
+}
+
+.match-header {
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.match-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
+.team-info {
+  text-align: center;
+}
+
+.club-name {
+  font-weight: 600;
+}
+
+.players {
+  font-size: 0.9rem;
+  color: #555;
+}
+
+.score {
+  font-size: 1.25rem;
+  font-weight: 700;
+}
