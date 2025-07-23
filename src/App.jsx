@@ -7,6 +7,8 @@ function App() {
   const [clubs, setClubs] = useState({})
   const [players, setPlayers] = useState([])
   const [matches, setMatches] = useState([])
+  const [selectedTier, setSelectedTier] = useState(null)
+  const [tierClubs, setTierClubs] = useState([])
   const [username, setUsername] = useState('')
   const [form, setForm] = useState({
     teamAClub: '',
@@ -25,6 +27,20 @@ function App() {
     const matchesRes = await fetch(`${API}/matches`)
     if (matchesRes.ok) setMatches(await matchesRes.json())
   }
+
+  const randomizeTier = async () => {
+    const tiers = Object.keys(clubs)
+    if (tiers.length === 0) return
+    const randTier = tiers[Math.floor(Math.random() * tiers.length)]
+    setSelectedTier(parseInt(randTier))
+    const res = await fetch(`${API}/clubs?tier=${randTier}`)
+    if (res.ok) {
+      const data = await res.json()
+      setTierClubs(data[randTier] || [])
+      setForm({ ...form, teamAClub: '', teamBClub: '' })
+    }
+  }
+
 
   useEffect(() => {
     fetchData()
@@ -81,11 +97,13 @@ function App() {
       </section>
       <section>
         <h2>Create Match</h2>
+        <button onClick={randomizeTier}>Random Tier</button>
+        {selectedTier && <div>Selected Tier: {selectedTier}</div>}
         <div>
           <label>Team A Club:</label>
           <select value={form.teamAClub} onChange={(e) => setForm({ ...form, teamAClub: e.target.value })}>
             <option value="">select</option>
-            {Object.values(clubs).flat().map((c) => (
+            {(tierClubs.length ? tierClubs : Object.values(clubs).flat()).map((c) => (
               <option key={c.id} value={c.id}>{c.name}</option>
             ))}
           </select>
@@ -94,7 +112,7 @@ function App() {
           <label>Team B Club:</label>
           <select value={form.teamBClub} onChange={(e) => setForm({ ...form, teamBClub: e.target.value })}>
             <option value="">select</option>
-            {Object.values(clubs).flat().map((c) => (
+            {(tierClubs.length ? tierClubs : Object.values(clubs).flat()).map((c) => (
               <option key={c.id} value={c.id}>{c.name}</option>
             ))}
           </select>
