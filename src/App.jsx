@@ -10,6 +10,7 @@ function App() {
   const [selectedTier, setSelectedTier] = useState(null)
   const [tierClubs, setTierClubs] = useState([])
   const [username, setUsername] = useState('')
+  const [adminToken, setAdminToken] = useState('')
   const [form, setForm] = useState({
     teamAClub: '',
     teamBClub: '',
@@ -79,6 +80,30 @@ function App() {
       fetchData()
     } else {
       alert('error creating match')
+    }
+  }
+
+  const deletePlayer = async (id) => {
+    const res = await fetch(`${API}/players/${id}`, {
+      method: 'DELETE',
+      headers: { 'X-Admin-Token': adminToken },
+    })
+    if (res.ok) {
+      fetchData()
+    } else {
+      alert('failed to delete player')
+    }
+  }
+
+  const deleteMatch = async (id) => {
+    const res = await fetch(`${API}/matches/${id}`, {
+      method: 'DELETE',
+      headers: { 'X-Admin-Token': adminToken },
+    })
+    if (res.ok) {
+      fetchData()
+    } else {
+      alert('failed to delete match')
     }
   }
 
@@ -178,7 +203,33 @@ function App() {
             })}
           </ul>
         </section>
-    </div>
+        <section>
+          <h2>Admin Panel</h2>
+          <input
+            value={adminToken}
+            onChange={(e) => setAdminToken(e.target.value)}
+            placeholder="admin token"
+          />
+          <h3>Players</h3>
+          <ul>
+            {players.map((p) => (
+              <li key={p.id}>
+                {p.id}: {p.username}{' '}
+                <button onClick={() => deletePlayer(p.id)}>Delete</button>
+              </li>
+            ))}
+          </ul>
+          <h3>Matches</h3>
+          <ul>
+            {matches.map((m) => (
+              <li key={m.id}>
+                {m.team_a_club.name} vs {m.team_b_club.name}{' '}
+                <button onClick={() => deleteMatch(m.id)}>Delete</button>
+              </li>
+            ))}
+          </ul>
+        </section>
+      </div>
   )
 }
 
