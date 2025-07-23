@@ -1,4 +1,5 @@
 from fastapi import FastAPI, Depends, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 from collections import defaultdict
 
@@ -8,6 +9,15 @@ from .database import engine, Base, get_db
 Base.metadata.create_all(bind=engine)
 
 app = FastAPI(title="FIFA Matchup Generator")
+
+# Allow frontend applications (e.g. Vite dev server) to access the API
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"]
+)
 
 # Predefined clubs with tiers
 DEFAULT_CLUBS = {
