@@ -35,8 +35,11 @@ def populate_clubs():
     db.commit()
 
 @app.get("/clubs", response_model=dict)
-def get_clubs(db: Session = Depends(get_db)):
-    clubs = db.query(models.Club).all()
+def get_clubs(tier: int | None = None, db: Session = Depends(get_db)):
+    query = db.query(models.Club)
+    if tier is not None:
+        query = query.filter(models.Club.tier == tier)
+    clubs = query.all()
     by_tier = defaultdict(list)
     for c in clubs:
         by_tier[c.tier].append(schemas.ClubRead.from_orm(c))
