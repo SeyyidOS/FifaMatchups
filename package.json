@@ -1,6 +1,6 @@
 {
-  "homepage": "https://github.com/SeyyidOS/FifaMatchups",
-  "name": "matchups",
+  "homepage": "https://github.com/SeyyidOS/FifaMatchups/",
+  "name": "FifaMatchups",
   "private": true,
   "version": "0.0.0",
   "type": "module",
