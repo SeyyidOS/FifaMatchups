@@ -111,3 +111,20 @@ li {
   font-size: 1.25rem;
   font-weight: 700;
 }
+
+.leaderboard-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 1rem;
+}
+
+.leaderboard-table th,
+.leaderboard-table td {
+  border: 1px solid #dce8ff;
+  padding: 0.5rem;
+  text-align: left;
+}
+
+.leaderboard-table th {
+  background: #f0f7ff;
+}

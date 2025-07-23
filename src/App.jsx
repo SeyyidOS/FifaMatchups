@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom'
 import Home from './Home.jsx'
 import AdminPage from './AdminPage.jsx'
+import Leaderboard from './Leaderboard.jsx'
 import './App.css'
 
 const API = 'http://127.0.0.1:8000'
@@ -113,7 +114,9 @@ function App() {
   return (
     <Router>
       <nav>
-        <Link to="/">Home</Link> | <Link to="/admin">Admin</Link>
+        <Link to="/">Home</Link> |{' '}
+        <Link to="/admin">Admin</Link> |{' '}
+        <Link to="/leaderboard">Leaderboard</Link>
       </nav>
       <Routes>
         <Route
@@ -148,6 +151,7 @@ function App() {
             />
           )}
         />
+        <Route path="/leaderboard" element={<Leaderboard />} />
       </Routes>
     </Router>
   )
