@@ -5,7 +5,7 @@ import AdminPage from "./AdminPage.jsx";
 import Leaderboard from "./Leaderboard.jsx";
 import "./App.css";
 
-const API = "http://173.249.40.69:8001";
+const API = "https://fifamatchups.onrender.com";
 
 function App() {
   const [clubs, setClubs] = useState({});

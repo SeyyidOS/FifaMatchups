@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-const API = "http://173.249.40.69:8001";
+const API = "https://fifamatchups.onrender.com";
 
 export default function Leaderboard() {
   const [individual, setIndividual] = useState([]);
