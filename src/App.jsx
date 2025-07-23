@@ -1,4 +1,7 @@
 import { useEffect, useState } from 'react'
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom'
+import Home from './Home.jsx'
+import AdminPage from './AdminPage.jsx'
 import './App.css'
 
 const API = 'http://127.0.0.1:8000'
@@ -108,128 +111,45 @@ function App() {
   }
 
   return (
-    <div className="App">
-      <h1>FIFA Matchups</h1>
-      <section>
-        <h2>Add Player</h2>
-        <input value={username} onChange={(e) => setUsername(e.target.value)} placeholder="username" />
-        <button onClick={addPlayer}>Add</button>
-        <ul>
-          {players.map((p) => (
-            <li key={p.id}>{p.id}: {p.username}</li>
-          ))}
-        </ul>
-      </section>
-      <section>
-        <h2>Create Match</h2>
-        <button onClick={randomizeTier}>Random Tier</button>
-        {selectedTier && <div>Selected Tier: {selectedTier}</div>}
-        <div>
-          <label>Team A Club:</label>
-          <select value={form.teamAClub} onChange={(e) => setForm({ ...form, teamAClub: e.target.value })}>
-            <option value="">select</option>
-            {(tierClubs.length ? tierClubs : Object.values(clubs).flat()).map((c) => (
-              <option key={c.id} value={c.id}>{c.name}</option>
-            ))}
-          </select>
-        </div>
-        <div>
-          <label>Team B Club:</label>
-          <select value={form.teamBClub} onChange={(e) => setForm({ ...form, teamBClub: e.target.value })}>
-            <option value="">select</option>
-            {(tierClubs.length ? tierClubs : Object.values(clubs).flat()).map((c) => (
-              <option key={c.id} value={c.id}>{c.name}</option>
-            ))}
-          </select>
-        </div>
-        <div>
-          <label>Team A Players (ids comma separated):</label>
-          <input value={form.teamAPlayers} onChange={(e) => setForm({ ...form, teamAPlayers: e.target.value })} />
-        </div>
-        <div>
-          <label>Team B Players (ids comma separated):</label>
-          <input value={form.teamBPlayers} onChange={(e) => setForm({ ...form, teamBPlayers: e.target.value })} />
-        </div>
-        <div className="score-inputs">
-          <div>
-            <label>Score A:</label>
-            <input
-              type="number"
-              value={form.teamAScore}
-              onChange={(e) => setForm({ ...form, teamAScore: e.target.value })}
+    <Router>
+      <nav>
+        <Link to="/">Home</Link> | <Link to="/admin">Admin</Link>
+      </nav>
+      <Routes>
+        <Route
+          path="/"
+          element={(
+            <Home
+              username={username}
+              setUsername={setUsername}
+              players={players}
+              addPlayer={addPlayer}
+              clubs={clubs}
+              randomizeTier={randomizeTier}
+              selectedTier={selectedTier}
+              tierClubs={tierClubs}
+              form={form}
+              setForm={setForm}
+              createMatch={createMatch}
+              matches={matches}
             />
-          </div>
-          <div>
-            <label>Score B:</label>
-            <input
-              type="number"
-              value={form.teamBScore}
-              onChange={(e) => setForm({ ...form, teamBScore: e.target.value })}
+          )}
+        />
+        <Route
+          path="/admin"
+          element={(
+            <AdminPage
+              adminToken={adminToken}
+              setAdminToken={setAdminToken}
+              players={players}
+              matches={matches}
+              deletePlayer={deletePlayer}
+              deleteMatch={deleteMatch}
             />
-          </div>
-        </div>
-        <button onClick={createMatch}>Submit Match</button>
-      </section>
-        <section>
-          <h2>Matches</h2>
-          <ul>
-            {matches.map((m) => {
-              const teamAPlayers = m.players
-                .filter((mp) => mp.team === 1)
-                .map((mp) => mp.player.username)
-                .join(', ')
-              const teamBPlayers = m.players
-                .filter((mp) => mp.team === 2)
-                .map((mp) => mp.player.username)
-                .join(', ')
-              return (
-                <li key={m.id} className="match-item">
-                  <div className="match-header">{new Date(m.date).toLocaleString()}</div>
-                  <div className="match-content">
-                    <div className="team-info">
-                      <div className="club-name">{m.team_a_club.name}</div>
-                      <div className="players">{teamAPlayers}</div>
-                    </div>
-                    <div className="score">
-                      {m.team_a_score} - {m.team_b_score}
-                    </div>
-                    <div className="team-info">
-                      <div className="club-name">{m.team_b_club.name}</div>
-                      <div className="players">{teamBPlayers}</div>
-                    </div>
-                  </div>
-                </li>
-              )
-            })}
-          </ul>
-        </section>
-        <section>
-          <h2>Admin Panel</h2>
-          <input
-            value={adminToken}
-            onChange={(e) => setAdminToken(e.target.value)}
-            placeholder="admin token"
-          />
-          <h3>Players</h3>
-          <ul>
-            {players.map((p) => (
-              <li key={p.id}>
-                {p.id}: {p.username}{' '}
-                <button onClick={() => deletePlayer(p.id)}>Delete</button>
-              </li>
-            ))}
-          </ul>
-          <h3>Matches</h3>
-          <ul>
-            {matches.map((m) => (
-              <li key={m.id}>
-                {m.team_a_club.name} vs {m.team_b_club.name}{' '}
-                <button onClick={() => deleteMatch(m.id)}>Delete</button>
-              </li>
-            ))}
-          </ul>
-        </section>
-      </div>
+          )}
+        />
+      </Routes>
+    </Router>
   )
 }
 
