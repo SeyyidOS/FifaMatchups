@@ -4,12 +4,13 @@ body {
   background: linear-gradient(135deg, #e3f2fd, #e0f7fa);
   min-height: 100vh;
   color: #333;
+  padding: 1rem;
 }
 
 #root {
   max-width: 960px;
   margin: 0 auto;
-  padding: 2rem;
+  padding: 3rem;
 }
 
 a {
