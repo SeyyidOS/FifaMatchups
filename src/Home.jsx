@@ -5,8 +5,10 @@ export default function Home({
   setUsername,
   players,
   addPlayer,
+  addingPlayer,
   clubs,
   randomizeTier,
+  randomizingTier,
   selectedTier,
   tierClubs,
   form,
@@ -25,7 +27,9 @@ export default function Home({
           onChange={(e) => setUsername(e.target.value)}
           placeholder="username"
         />
-        <button onClick={addPlayer}>Add</button>
+        <button onClick={addPlayer} disabled={addingPlayer}>
+          {addingPlayer ? <div className="spinner" /> : "Add"}
+        </button>
         <ul>
           {players.map((p) => (
             <li key={p.id}>
@@ -36,7 +40,9 @@ export default function Home({
       </section>
       <section>
         <h2>Create Match</h2>
-        <button onClick={randomizeTier}>Random Tier</button>
+        <button onClick={randomizeTier} disabled={randomizingTier}>
+          {randomizingTier ? <div className="spinner" /> : "Random Tier"}
+        </button>
         {selectedTier && <div>Selected Tier: {selectedTier}</div>}
         <div className="club-inputs">
           <div>
