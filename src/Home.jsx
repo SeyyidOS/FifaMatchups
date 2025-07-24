@@ -85,6 +85,7 @@ export default function Home({
               {players.map((p) => (
                 <li key={p.id}>
                   <label>
+                    {p.username}
                     <input
                       type="checkbox"
                       checked={form.teamAPlayers.includes(String(p.id))}
@@ -98,7 +99,6 @@ export default function Home({
                         }));
                       }}
                     />
-                    {p.username}
                   </label>
                 </li>
               ))}
@@ -110,6 +110,7 @@ export default function Home({
               {players.map((p) => (
                 <li key={p.id}>
                   <label>
+                    {p.username}
                     <input
                       type="checkbox"
                       checked={form.teamBPlayers.includes(String(p.id))}
@@ -123,7 +124,6 @@ export default function Home({
                         }));
                       }}
                     />
-                    {p.username}
                   </label>
                 </li>
               ))}
