@@ -80,22 +80,46 @@ export default function Home({
         </div>
         <div className="player-inputs">
           <div>
-            <label>Team A Players (ids comma separated):</label>
-            <input
+            <label>Team A Players:</label>
+            <select
+              multiple
               value={form.teamAPlayers}
               onChange={(e) =>
-                setForm({ ...form, teamAPlayers: e.target.value })
+                setForm({
+                  ...form,
+                  teamAPlayers: Array.from(e.target.selectedOptions).map(
+                    (o) => o.value
+                  ),
+                })
               }
-            />
+            >
+              {players.map((p) => (
+                <option key={p.id} value={p.id}>
+                  {p.username}
+                </option>
+              ))}
+            </select>
           </div>
           <div>
-            <label>Team B Players (ids comma separated):</label>
-            <input
+            <label>Team B Players:</label>
+            <select
+              multiple
               value={form.teamBPlayers}
               onChange={(e) =>
-                setForm({ ...form, teamBPlayers: e.target.value })
+                setForm({
+                  ...form,
+                  teamBPlayers: Array.from(e.target.selectedOptions).map(
+                    (o) => o.value
+                  ),
+                })
               }
-            />
+            >
+              {players.map((p) => (
+                <option key={p.id} value={p.id}>
+                  {p.username}
+                </option>
+              ))}
+            </select>
           </div>
         </div>
         <div className="score-inputs">
