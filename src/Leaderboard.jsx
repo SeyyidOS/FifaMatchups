@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-const API = "https://fifamatchups.onrender.com";
+const API = "https://fifa-backend-1007444302360.us-central1.run.app";
 
 export default function Leaderboard() {
   const [individual, setIndividual] = useState([]);

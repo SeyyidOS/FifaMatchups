@@ -3,8 +3,11 @@ from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 from collections import defaultdict
 
-from . import models, schemas
-from .database import engine, Base, get_db
+import models, schemas
+from database import engine, Base, get_db
+
+import uvicorn
+import os
 
 Base.metadata.create_all(bind=engine)
 
@@ -238,3 +241,8 @@ def delete_match(match_id: int, db: Session = Depends(get_db)):
     db.delete(match)
     db.commit()
     return {"detail": "Match deleted"}
+
+
+if __name__ == "__main__":
+    port = int(os.environ.get("PORT", 8080))
+    uvicorn.run("main:app", host="0.0.0.0", port=port, reload=False)
