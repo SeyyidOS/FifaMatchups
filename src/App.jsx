@@ -25,8 +25,8 @@ function App() {
     teamBClub: "",
     teamAScore: 0,
     teamBScore: 0,
-    teamAPlayers: "",
-    teamBPlayers: "",
+    teamAPlayers: [],
+    teamBPlayers: [],
   });
 
   const fetchData = async () => {
@@ -84,12 +84,14 @@ function App() {
       team_a_score: parseInt(form.teamAScore),
       team_b_score: parseInt(form.teamBScore),
       players: [
-        ...form.teamAPlayers
-          .split(",")
-          .map((id) => ({ player_id: parseInt(id), team: 1 })),
-        ...form.teamBPlayers
-          .split(",")
-          .map((id) => ({ player_id: parseInt(id), team: 2 })),
+        ...form.teamAPlayers.map((id) => ({
+          player_id: parseInt(id),
+          team: 1,
+        })),
+        ...form.teamBPlayers.map((id) => ({
+          player_id: parseInt(id),
+          team: 2,
+        })),
       ],
     };
     const res = await fetch(`${API}/matches`, {
@@ -104,8 +106,8 @@ function App() {
         teamBClub: "",
         teamAScore: 0,
         teamBScore: 0,
-        teamAPlayers: "",
-        teamBPlayers: "",
+        teamAPlayers: [],
+        teamBPlayers: [],
       });
       fetchData();
     } else {
