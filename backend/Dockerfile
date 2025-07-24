@@ -15,4 +15,4 @@ COPY . .
 EXPOSE 8080
 
 # Start FastAPI with uvicorn (adjust if using Flask)
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8080"]
+CMD ["uvicorn", "cloud_main:app", "--host", "0.0.0.0", "--port", "8080"]
