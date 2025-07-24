@@ -81,53 +81,45 @@ export default function Home({
         <div className="player-inputs">
           <div>
             <label>Team A Players:</label>
-            <ul className="player-checkbox-list">
+            <select
+              multiple
+              value={form.teamAPlayers}
+              onChange={(e) =>
+                setForm({
+                  ...form,
+                  teamAPlayers: Array.from(e.target.selectedOptions).map(
+                    (o) => o.value
+                  ),
+                })
+              }
+            >
               {players.map((p) => (
-                <li key={p.id}>
-                  <label>
-                    {p.username}
-                    <input
-                      type="checkbox"
-                      checked={form.teamAPlayers.includes(String(p.id))}
-                      onChange={() => {
-                        const id = String(p.id);
-                        setForm((f) => ({
-                          ...f,
-                          teamAPlayers: f.teamAPlayers.includes(id)
-                            ? f.teamAPlayers.filter((pid) => pid !== id)
-                            : [...f.teamAPlayers, id],
-                        }));
-                      }}
-                    />
-                  </label>
-                </li>
+                <option key={p.id} value={p.id}>
+                  {p.username}
+                </option>
               ))}
-            </ul>
+            </select>
           </div>
           <div>
             <label>Team B Players:</label>
-            <ul className="player-checkbox-list">
+            <select
+              multiple
+              value={form.teamBPlayers}
+              onChange={(e) =>
+                setForm({
+                  ...form,
+                  teamBPlayers: Array.from(e.target.selectedOptions).map(
+                    (o) => o.value
+                  ),
+                })
+              }
+            >
               {players.map((p) => (
-                <li key={p.id}>
-                  <label>
-                    {p.username}
-                    <input
-                      type="checkbox"
-                      checked={form.teamBPlayers.includes(String(p.id))}
-                      onChange={() => {
-                        const id = String(p.id);
-                        setForm((f) => ({
-                          ...f,
-                          teamBPlayers: f.teamBPlayers.includes(id)
-                            ? f.teamBPlayers.filter((pid) => pid !== id)
-                            : [...f.teamBPlayers, id],
-                        }));
-                      }}
-                    />
-                  </label>
-                </li>
+                <option key={p.id} value={p.id}>
+                  {p.username}
+                </option>
               ))}
-            </ul>
+            </select>
           </div>
         </div>
         <div className="score-inputs">
