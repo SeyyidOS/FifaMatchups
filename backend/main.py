@@ -4,7 +4,7 @@ from sqlalchemy.orm import Session
 from collections import defaultdict
 
 import models, schemas
-from database import engine, Base, get_db
+from database import engine, Base, get_db, SessionLocal
 
 import uvicorn
 import os
