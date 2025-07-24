@@ -57,12 +57,15 @@ def admin_required(x_admin_token: str | None = Header(default=None)):
 
 @app.on_event("startup")
 def populate_clubs():
-    db = next(get_db())
-    for tier, clubs in DEFAULT_CLUBS.items():
-        for name in clubs:
-            if not db.query(models.Club).filter_by(name=name).first():
-                db.add(models.Club(name=name, tier=tier))
-    db.commit()
+    # Use a context manager so the session is properly closed once the
+    # initialization step is complete. Leaving the connection open caused
+    # lingering sessions on some deployments.
+    with SessionLocal() as db:
+        for tier, clubs in DEFAULT_CLUBS.items():
+            for name in clubs:
+                if not db.query(models.Club).filter_by(name=name).first():
+                    db.add(models.Club(name=name, tier=tier))
+        db.commit()
 
 
 @app.get("/clubs", response_model=dict)
