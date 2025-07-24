@@ -16,7 +16,7 @@ export default function Home({
 }) {
   return (
     <div className="App">
-      <h1>FIFA Matchups</h1>
+      <h1>FIFA Matchups 1</h1>
       <section>
         <h2>Add Player</h2>
         <input
