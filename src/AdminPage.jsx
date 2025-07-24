@@ -7,6 +7,8 @@ export default function AdminPage({
   matches,
   deletePlayer,
   deleteMatch,
+  deletingPlayerIds,
+  deletingMatchIds,
 }) {
   return (
     <div className="App">
@@ -21,8 +23,16 @@ export default function AdminPage({
         {players.map((p) => (
           <li key={p.id}>
             {p.id}: {p.username}{' '}
-            <button className="danger" onClick={() => deletePlayer(p.id)}>
-              Delete
+            <button
+              className="danger"
+              onClick={() => deletePlayer(p.id)}
+              disabled={deletingPlayerIds.includes(p.id)}
+            >
+              {deletingPlayerIds.includes(p.id) ? (
+                <div className="spinner" />
+              ) : (
+                'Delete'
+              )}
             </button>
           </li>
         ))}
@@ -32,8 +42,16 @@ export default function AdminPage({
         {matches.map((m) => (
           <li key={m.id}>
             {m.team_a_club.name} vs {m.team_b_club.name}{' '}
-            <button className="danger" onClick={() => deleteMatch(m.id)}>
-              Delete
+            <button
+              className="danger"
+              onClick={() => deleteMatch(m.id)}
+              disabled={deletingMatchIds.includes(m.id)}
+            >
+              {deletingMatchIds.includes(m.id) ? (
+                <div className="spinner" />
+              ) : (
+                'Delete'
+              )}
             </button>
           </li>
         ))}

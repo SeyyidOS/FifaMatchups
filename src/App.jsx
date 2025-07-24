@@ -16,6 +16,10 @@ function App() {
   const [username, setUsername] = useState("");
   const [adminToken, setAdminToken] = useState("");
   const [creatingMatch, setCreatingMatch] = useState(false);
+  const [addingPlayer, setAddingPlayer] = useState(false);
+  const [randomizingTier, setRandomizingTier] = useState(false);
+  const [deletingPlayerIds, setDeletingPlayerIds] = useState([]);
+  const [deletingMatchIds, setDeletingMatchIds] = useState([]);
   const [form, setForm] = useState({
     teamAClub: "",
     teamBClub: "",
@@ -35,8 +39,10 @@ function App() {
   };
 
   const randomizeTier = async () => {
+    if (randomizingTier) return;
     const tiers = Object.keys(clubs);
     if (tiers.length === 0) return;
+    setRandomizingTier(true);
     const randTier = tiers[Math.floor(Math.random() * tiers.length)];
     setSelectedTier(parseInt(randTier));
     const res = await fetch(`${API}/clubs?tier=${randTier}`);
@@ -45,6 +51,7 @@ function App() {
       setTierClubs(data[randTier] || []);
       setForm({ ...form, teamAClub: "", teamBClub: "" });
     }
+    setRandomizingTier(false);
   };
 
   useEffect(() => {
@@ -52,14 +59,19 @@ function App() {
   }, []);
 
   const addPlayer = async () => {
+    if (addingPlayer) return;
+    setAddingPlayer(true);
     const res = await fetch(`${API}/players`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ username }),
     });
+    setAddingPlayer(false);
     if (res.ok) {
       setUsername("");
       fetchData();
+    } else {
+      alert("failed to add player");
     }
   };
 
@@ -102,10 +114,13 @@ function App() {
   };
 
   const deletePlayer = async (id) => {
+    if (deletingPlayerIds.includes(id)) return;
+    setDeletingPlayerIds((ids) => [...ids, id]);
     const res = await fetch(`${API}/players/${id}`, {
       method: "DELETE",
       headers: { "X-Admin-Token": adminToken },
     });
+    setDeletingPlayerIds((ids) => ids.filter((i) => i !== id));
     if (res.ok) {
       fetchData();
     } else {
@@ -114,10 +129,13 @@ function App() {
   };
 
   const deleteMatch = async (id) => {
+    if (deletingMatchIds.includes(id)) return;
+    setDeletingMatchIds((ids) => [...ids, id]);
     const res = await fetch(`${API}/matches/${id}`, {
       method: "DELETE",
       headers: { "X-Admin-Token": adminToken },
     });
+    setDeletingMatchIds((ids) => ids.filter((i) => i !== id));
     if (res.ok) {
       fetchData();
     } else {
@@ -140,8 +158,10 @@ function App() {
               setUsername={setUsername}
               players={players}
               addPlayer={addPlayer}
+              addingPlayer={addingPlayer}
               clubs={clubs}
               randomizeTier={randomizeTier}
+              randomizingTier={randomizingTier}
               selectedTier={selectedTier}
               tierClubs={tierClubs}
               form={form}
@@ -162,6 +182,8 @@ function App() {
               matches={matches}
               deletePlayer={deletePlayer}
               deleteMatch={deleteMatch}
+              deletingPlayerIds={deletingPlayerIds}
+              deletingMatchIds={deletingMatchIds}
             />
           }
         />
