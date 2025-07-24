@@ -15,6 +15,7 @@ function App() {
   const [tierClubs, setTierClubs] = useState([]);
   const [username, setUsername] = useState("");
   const [adminToken, setAdminToken] = useState("");
+  const [creatingMatch, setCreatingMatch] = useState(false);
   const [form, setForm] = useState({
     teamAClub: "",
     teamBClub: "",
@@ -63,6 +64,8 @@ function App() {
   };
 
   const createMatch = async () => {
+    if (creatingMatch) return;
+    setCreatingMatch(true);
     const body = {
       team_a_club_id: parseInt(form.teamAClub),
       team_b_club_id: parseInt(form.teamBClub),
@@ -82,6 +85,7 @@ function App() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(body),
     });
+    setCreatingMatch(false);
     if (res.ok) {
       setForm({
         teamAClub: "",
@@ -143,6 +147,7 @@ function App() {
               form={form}
               setForm={setForm}
               createMatch={createMatch}
+              creatingMatch={creatingMatch}
               matches={matches}
             />
           }
